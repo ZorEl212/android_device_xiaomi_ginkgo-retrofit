@@ -26,6 +26,10 @@ $(call inherit-product, device/xiaomi/ginkgo/device.mk)
 # Inherit some common LineageOS stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+#PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+
 # Device identifier
 PRODUCT_NAME := lineage_ginkgo
 PRODUCT_DEVICE := ginkgo
