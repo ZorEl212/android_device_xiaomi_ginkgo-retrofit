@@ -17,3 +17,7 @@ hal_client_domain(hal_fingerprint_default, vendor_hal_perf)
 
 # Ignore all logging requests
 dontaudit hal_fingerprint storage_file:dir search;
+
+#Read default prop
+allow hal_fingerprint_default default_prop:file read;
+
