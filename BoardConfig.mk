@@ -102,9 +102,9 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_ginkgo
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 earlycon=msm_geni_serial,0x4a90000 loop.max_part=7 cgroup.memory=nokmem,nosocket
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+#BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/4744000.sdhci
-#BOARD_KERNEL_CMDLINE := androidboot.super_partition=system
+BOARD_KERNEL_CMDLINE := androidboot.super_partition=system
 #BOARD_KERNEL_CMDLINE := androidboot.android_dt_dir=/non-existent
 BOARD_KERNEL_CMDLINE += kpti=off
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
@@ -124,33 +124,42 @@ TARGET_KERNEL_ADDITIONAL_FLAGS += HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-l
 # Lineage Health
 TARGET_HEALTH_CHARGING_CONTROL_SUPPORTS_BYPASS := false
 
-<<<<<<< HEAD
-# Partitions
-=======
 # NFC
 TARGET_USES_NQ_NFC := true
 
 #Retrofit 
-PARTITIONS := system vendor
-$(foreach p, $(call to-upper, $(PARTITIONS)), \
+SSI_PARTITIONS := product system system_ext
+TREBLE_PARTITIONS := vendor odm
+ALL_PARTITIONS := $(SSI_PARTITIONS) $(TREBLE_PARTITIONS)
+
+$(foreach p, $(call to-upper, $(ALL_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := ext4) \
     $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
 
-BOARD_SUPER_PARTITION_SIZE := 6442450944
 BOARD_SUPER_PARTITION_GROUPS := ginkgo_dynapart
-BOARD_GINKGO_DYNAPART_PARTITION_LIST := $(PARTITIONS)
-BOARD_GINKGO_DYNAPART_SIZE := 6438252544
-BOARD_SUPER_PARTITION_BLOCK_DEVICES := system vendor
+BOARD_GINKGO_DYNAPART_PARTITION_LIST := $(ALL_PARTITIONS)
+BOARD_SUPER_PARTITION_BLOCK_DEVICES := system vendor cust
 BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE := 4831838208
 BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 1610612736
+BOARD_SUPER_PARTITION_CUST_DEVICE_SIZE := 1073741824
+BOARD_SUPER_PARTITION_SIZE := $(shell expr $(BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE) + $(BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE) + $(BOARD_SUPER_PARTITION_CUST_DEVICE_SIZE))
+BOARD_GINKGO_DYNAPART_SIZE := $(shell expr $(BOARD_SUPER_PARTITION_SIZE) - 4194304)
 BOARD_SUPER_PARTITION_METADATA_DEVICE := system
 
-
-$(foreach p, $(call to-upper, $(PARTITIONS)), \
-    $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 100000000)) # 100 MB
+# Partitions - reserved size
+ifneq ($(WITH_GMS),true)
+$(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
+    $(eval BOARD_$(p)IMAGE_EXTFS_INODE_COUNT := -1))
+SSI_PARTITIONS_RESERVED_SIZE := 1101004800
+else
+SSI_PARTITIONS_RESERVED_SIZE := 30720000
+endif
+$(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
+    $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := $(SSI_PARTITIONS_RESERVED_SIZE)))
+$(foreach p, $(call to-upper, $(TREBLE_PARTITIONS)), \
+    $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 30720000))
 
 #Partitions
->>>>>>> 0bd7648 (Ginkgo: Setup Retrofit Partitions)
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_CACHEIMAGE_PARTITION_SIZE := 402653184
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
