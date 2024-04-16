@@ -11,6 +11,16 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 # Vendor blobs
 $(call inherit-product, vendor/xiaomi/ginkgo/ginkgo-vendor.mk)
 
+# ViPER4AndroidFX
+$(call inherit-product, packages/apps/ViPER4AndroidFX/config.mk)
+
+# Prebuilts
+ PRODUCT_PACKAGES += \
+    FilesPrebuilt
+
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/prebuilts/priv-app/PermissionController/PermissionController.apk.tmp:$(TARGET_COPY_OUT_SYSTEM)/media/PermissionController.apk.tmp
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
