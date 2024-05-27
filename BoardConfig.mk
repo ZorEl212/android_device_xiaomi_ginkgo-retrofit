@@ -60,6 +60,8 @@ TARGET_NO_BOOTLOADER := true
 # Camera
 TARGET_NEEDS_RAW10_BUFFER_FIX := true
 TARGET_USES_QTI_CAMERA_DEVICE := true
+TARGET_CAMERA_SERVICE_EXT_LIB := //$(DEVICE_PATH):libcameraservice_extension.ginkgo
+:
 
 ifeq ($(WITH_GMS),true)
 #Compression
