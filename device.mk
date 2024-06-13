@@ -38,6 +38,7 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     libaudio-resampler \
     libaudioroute \
+    libaudioroute.vendor \
     libtinycompress \
     libvolumelistener
 
@@ -194,7 +195,8 @@ PRODUCT_PACKAGES += \
     libhidltransport \
     libhidltransport.vendor \
     libhwbinder \
-    libhwbinder.vendor
+    libhwbinder.vendor \
+    libhidlmemory.vendor
 
 # IMS
 PRODUCT_PACKAGES += \
@@ -224,7 +226,8 @@ PRODUCT_COPY_FILES += \
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0.vendor \
-    android.hardware.keymaster@4.1.vendor
+    android.hardware.keymaster@4.1.vendor \
+    libion.vendor
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -361,7 +364,8 @@ PRODUCT_PACKAGES += \
     libjson \
     libprotobuf-cpp-full \
     libprotobuf-cpp-full-3.9.1-vendorcompat \
-    librmnetctl
+    librmnetctl \
+    libsqlite.vendor:64
 
 PRODUCT_PACKAGES += \
     android.hardware.radio@1.5.vendor \
@@ -476,3 +480,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.software.ipsec_tunnels.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.ipsec_tunnels.xml
+
+# WiFi Display
+PRODUCT_PACKAGES += \
+    libpng.vendor \
+    libprocessgroup.vendor
