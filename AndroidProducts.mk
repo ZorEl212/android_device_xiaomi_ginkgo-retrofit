@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/afterlife_ginkgo.mk
+    $(LOCAL_DIR)/arrow_ginkgo.mk
 
 COMMON_LUNCH_CHOICES := \
-    afterlife_ginkgo-user \
-    afterlife_ginkgo-userdebug \
-    afterlife_ginkgo-eng
+    arrow_ginkgo-user \
+    arrow_ginkgo-userdebug \
+    arrow_ginkgo-eng
