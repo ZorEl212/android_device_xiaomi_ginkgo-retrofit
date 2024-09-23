@@ -129,7 +129,7 @@ TARGET_USES_NQ_NFC := true
 #Retrofit 
 PARTITIONS := system vendor
 $(foreach p, $(call to-upper, $(PARTITIONS)), \
-    $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := ext4) \
+    $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs) \
     $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
 
 BOARD_SUPER_PARTITION_SIZE := 6442450944
@@ -158,6 +158,8 @@ BOARD_USES_METADATA_PARTITION := true
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_EROFS_PCLUSTER_SIZE := 65536
+BOARD_EROFS_COMPRESSOR := lz4
 
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
