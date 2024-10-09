@@ -25,7 +25,7 @@ cc_binary {
         "-Wno-unused-parameter",
     ],
     shared_libs: [
-        "android.hardware.power-V4-ndk",
+        "android.hardware.power-V3-ndk",
         "libbase",
         "libbinder_ndk",
         "libcutils",
@@ -53,6 +53,6 @@ cc_library_static {
         "PowerModeExtension.cpp",
     ],
     shared_libs: [
-        "android.hardware.power-V4-ndk",
+        "android.hardware.power-V3-ndk",
     ],
 }
