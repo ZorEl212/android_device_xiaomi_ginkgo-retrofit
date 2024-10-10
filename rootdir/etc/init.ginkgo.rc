@@ -2,11 +2,6 @@
 # Custom ginkgo-specific init script
 #
 
-on early-init
-    # Boost schedtune
-    write /dev/stune/schedtune.boost 50
-    write /dev/stune/schedtune.prefer_idle 1
-
     # Boost I/O performance
     write /sys/block/mmcblk0/queue/scheduler "noop"
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
@@ -79,13 +74,12 @@ on property:persist.sys.device_provisioned=1
     setprop dalvik.vm.dex2oat-threads 6
 
 on property:sys.boot_completed=1
-    write /dev/stune/schedtune.prefer_idle 0
-    write /dev/stune/schedtune.boost 0
 
     # Enable ZRAM on boot_complete
     swapon_all /vendor/etc/fstab.qcom
 
 on property:vendor.post_boot.parsed=1
+
     # Setup cpusets
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-3,5-7
@@ -98,11 +92,6 @@ on property:vendor.post_boot.parsed=1
     write /sys/module/cpu_boost/parameters/input_boost_ms 100
     write /sys/module/cpu_boost/parameters/powerkey_input_boost_freq "0:1804800 4:2016000"
     write /sys/module/cpu_boost/parameters/powerkey_input_boost_ms 750
-
-    # Setup default schedTune value for foreground/top-app
-    write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 1
-    write /dev/stune/top-app/schedtune.prefer_idle 1
 
     # Setup runtime blkio
     write /dev/blkio/blkio.weight 1000
