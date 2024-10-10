@@ -2,6 +2,10 @@
 # Custom ginkgo-specific init script
 #
 
+on early-init
+    # Disable EAS
+    write /proc/sys/kernel/sched_energy_aware 0
+    
     # Boost I/O performance
     write /sys/block/mmcblk0/queue/scheduler "noop"
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
