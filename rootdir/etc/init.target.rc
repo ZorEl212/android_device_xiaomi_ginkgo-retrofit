@@ -104,6 +104,7 @@ on boot
     chown cameraserver cameraserver /dev/cpuset/camera-daemon
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
     chmod 0660 /dev/cpuset/camera-daemon/tasks
+    mkdir /dev/stune/camera-daemon
 
 # access permissions for FPC service
     chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq
@@ -218,6 +219,29 @@ on property:sys.boot_completed=1
     mkdir /data/vendor/charge_logger 0771 system system
     start charge_logger
 
+    # Uclamp tunings
+    setprop kernel.sched_util_clamp_min_rt_default 500
+    #top-app
+    write /dev/cpuset/top-app/uclamp.max max
+    write /dev/cpuset/top-app/uclamp.min 10
+    write /dev/cpuset/top-app/uclamp.boosted 1
+    write /dev/cpuset/top-app/uclamp.latency_sensitive 1
+    #foreground
+    write /dev/cpuset/foreground/uclamp.max 50
+    write /dev/cpuset/foreground/uclamp.min 0
+    write /dev/cpuset/foreground/uclamp.boosted 0
+    write /dev/cpuset/foreground/uclamp.latency_sensitive 0
+    #background
+    write /dev/cpuset/background/uclamp.max max
+    write /dev/cpuset/background/uclamp.min 20
+    write /dev/cpuset/background/uclamp.boosted 0
+    write /dev/cpuset/background/uclamp.latency_sensitive 0
+    #system-background
+    write /dev/cpuset/system-background/uclamp.max 40
+    write /dev/cpuset/system-background/uclamp.min 0
+    write /dev/cpuset/system-background/uclamp.boosted 0
+    write /dev/cpuset/system-background/uclamp.latency_sensitive 0
+    
 service spdaemon /vendor/bin/spdaemon
     class core
     user system
