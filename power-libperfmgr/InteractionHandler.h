@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#pragma once
+#ifndef POWER_LIBPERFMGR_INTERACTIONHANDLER_H_
+#define POWER_LIBPERFMGR_INTERACTIONHANDLER_H_
 
 #include <condition_variable>
 #include <memory>
@@ -22,14 +23,11 @@
 #include <string>
 #include <thread>
 
-namespace aidl {
-namespace google {
-namespace hardware {
-namespace power {
-namespace impl {
-namespace pixel {
+#include <perfmgr/HintManager.h>
 
-enum InteractionState {
+using ::android::perfmgr::HintManager;
+
+enum interaction_state {
     INTERACTION_STATE_UNINITIALIZED,
     INTERACTION_STATE_IDLE,
     INTERACTION_STATE_INTERACTION,
@@ -38,7 +36,7 @@ enum InteractionState {
 
 class InteractionHandler {
   public:
-    InteractionHandler();
+    InteractionHandler(std::shared_ptr<HintManager> const &hint_manager);
     ~InteractionHandler();
     bool Init();
     void Exit();
@@ -53,19 +51,24 @@ class InteractionHandler {
     void PerfLock();
     void PerfRel();
 
-    enum InteractionState mState;
+    size_t CalcTimespecDiffMs(struct timespec start, struct timespec end);
+
+    enum interaction_state mState;
+
     int mIdleFd;
     int mEventFd;
+
+    int32_t mWaitMs;
+    int32_t mMinDurationMs;
+    int32_t mMaxDurationMs;
     int32_t mDurationMs;
+
     struct timespec mLastTimespec;
+
     std::unique_ptr<std::thread> mThread;
     std::mutex mLock;
     std::condition_variable mCond;
+    std::shared_ptr<HintManager> mHintManager;
 };
 
-}  // namespace pixel
-}  // namespace impl
-}  // namespace power
-}  // namespace hardware
-}  // namespace google
-}  // namespace aidl
+#endif  // POWER_LIBPERFMGR_INTERACTIONHANDLER_H_
