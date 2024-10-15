@@ -12,8 +12,5 @@
 -->
 
 <resources>
-   <string name="maintainer_git_username">ZorEl212</string>
-    <string name="maintainer_tele_username">k_y_c_i_i_9_1</string>
-    <string name="maintainer_ig_username"></string>
-    <string name="maintainer_fb_username"></string>
+    <string name="maintainer_name">Yeab (ZorEl212) </string>
 </resources>
