@@ -42,7 +42,7 @@ PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 
 # CoreGapps
 ARROW_GAPPS := true
-WITH_GAPPS := true
+#WITH_GAPPS := true
 
 # FaceUnlock
 TARGET_FACE_UNLOCK_SUPPORTED := true
