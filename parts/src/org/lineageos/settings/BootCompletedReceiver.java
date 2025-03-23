@@ -28,6 +28,7 @@ import androidx.preference.PreferenceManager;
 import org.lineageos.settings.display.KcalUtils;
 import org.lineageos.settings.doze.DozeUtils;
 import org.lineageos.settings.utils.VibrationUtils;
+import org.lineageos.settings.utils.TorchUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
     private static final boolean DEBUG = false;
@@ -45,6 +46,10 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
         if (VibrationUtils.isAvailable()) {
             VibrationUtils.setCurrentVibStrength(sharedPrefs);
+        }
+
+        if (TorchUtils.isAvailable()) {
+            TorchUtils.setCurrentTorchStrength(sharedPrefs);
         }
 
         if (DozeUtils.isDozeEnabled(context) && DozeUtils.sensorsEnabled(context)) {

@@ -34,7 +34,7 @@ import org.lineageos.settings.display.LcdFeaturesPreferenceActivity;
 import org.lineageos.settings.doze.DozeSettingsActivity;
 import org.lineageos.settings.speaker.ClearSpeakerActivity;
 import org.lineageos.settings.utils.VibrationUtils;
-
+import org.lineageos.settings.utils.TorchUtils;
 public class DeviceSettingsFragment extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
@@ -43,6 +43,7 @@ public class DeviceSettingsFragment extends PreferenceFragment implements
     private static final String PREF_LCD_FEATURES = "lcd_features_settings";
     private static final String PREF_DOZE_SETTINGS = "doze_settings";
     private static final String PREF_VIBRATION_STRENGTH = "vibration_strength";
+    private static final String PREF_TORCH_STRENGTH = "torch_strength";
 
 
     private Preference mKcalSettingsPref;
@@ -51,6 +52,7 @@ public class DeviceSettingsFragment extends PreferenceFragment implements
     private Preference mDozeSettingsPref;
 
     private SeekBarPreference mVibStrengthPref;
+    private SeekBarPreference mTorchStrengthPerf;
 
 
     private Vibrator mVibrator;
@@ -90,6 +92,12 @@ public class DeviceSettingsFragment extends PreferenceFragment implements
         mVibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         mVibStrengthPref = (SeekBarPreference) findPreference(PREF_VIBRATION_STRENGTH);
+        mTorchStrengthPerf = (SeekBarPreference) findPreference(PREF_TORCH_STRENGTH);
+
+        mTorchStrengthPerf.setOnPreferenceChangeListener(this);
+        mTorchStrengthPerf.setValue(TorchUtils.getTorchStrength());
+        mTorchStrengthPerf.setSummary(Integer.toString(TorchUtils.getTorchStrength()) + "%");
+        mTorchStrengthPerf.setMin(20);
 
         if (VibrationUtils.isAvailable()) {
             mVibStrengthPref.setOnPreferenceChangeListener(this);
@@ -110,6 +118,10 @@ public class DeviceSettingsFragment extends PreferenceFragment implements
                 if (mVibrator.hasVibrator()) {
                     mVibrator.vibrate(VibrationEffect.createOneShot(75, VibrationEffect.DEFAULT_AMPLITUDE));
                 }
+                return true;
+            case PREF_TORCH_STRENGTH:
+                mTorchStrengthPerf.setSummary(String.valueOf(newValue) + "%");
+                TorchUtils.setTorchStrength((int) newValue);
                 return true;
             default:
                 return false;

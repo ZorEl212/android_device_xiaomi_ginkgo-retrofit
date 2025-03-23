@@ -84,4 +84,16 @@
             android:defaultValue="85" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="torch"
+        android:title="@string/torch_title">
+
+        <SeekBarPreference
+            android:key="torch_strength"
+            android:title="@string/torch_strength_title"
+            android:min="10"
+            android:max="100"
+            android:defaultValue="85" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
