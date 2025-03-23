@@ -25,7 +25,7 @@
  
      // Torch brightness range in kernel (adjust based on actual device values)
      private static final int MIN_BRIGHTNESS = 25; 
-     private static final int MAX_BRIGHTNESS = 500;
+     private static final int MAX_BRIGHTNESS = 255;
      private static final int BRIGHTNESS_RANGE = MAX_BRIGHTNESS - MIN_BRIGHTNESS;
  
      public static boolean isAvailable() {
